@@ -32,18 +32,16 @@ under the License.
 	</engines>
 
 	<!-- android -->
-	<platform name="android">
-	
-		<asset src="www/js/mobilecoreplugin.js" target="js/mobilecoreplugin.js" />
-		
-		<js-module src="www/js/mobilecoreplugin.js" name="MobilecorePlugin">
-			<clobbers target="window.plugins.MobilecorePlugin" />
-		</js-module>
+	<platform name="android">	
 		
 		<source-file src="src/android/MobilecorePlugin.java" target-dir="src/com/mobilecore/phonegap" />
 		<source-file src="src/android/mobilecore.jar" target-dir="libs" />
 		<source-file src="src/android/ForSlider/main.xml" target-dir="res/layout" />
 		<source-file src="src/android/ForSlider/MobilecoreActivity.java" target-dir="src/com/mobilecore/phonegap" />
+			
+		<js-module src="www/js/mobilecoreplugin.js" name="MobilecorePlugin">
+			<clobbers target="window.plugins.MobilecorePlugin" />
+		</js-module>
 		
 		<config-file target="AndroidManifest.xml" parent="/manifest/application">
 		
