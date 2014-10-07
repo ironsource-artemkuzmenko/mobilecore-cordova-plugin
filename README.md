@@ -1,0 +1,2 @@
+mobilecore-cordova-plugin
+=========================
