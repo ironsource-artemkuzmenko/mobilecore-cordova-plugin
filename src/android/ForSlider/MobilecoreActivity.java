@@ -3,19 +3,19 @@ package com.mobilecore.phonegap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import org.apache.cordova.CordovaInterface;
+import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.CordovaWebView;
-import org.apache.cordova.api.CordovaInterface;
-import org.apache.cordova.api.CordovaPlugin;
-import org.apache.cordova.api.LOG;
+import org.apache.cordova.LOG;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.example.hello.mobilecore.R;
 import com.ironsource.mobilcore.MobileCore;
-import com.ironsource.mobilcore.OnReadyListener;
 import com.ironsource.mobilcore.MobileCore.AD_UNITS;
-import com.phonegap.hello_world.R;
+import com.ironsource.mobilcore.OnReadyListener;
 
 public class MobilecoreActivity extends Activity implements CordovaInterface {
 
@@ -160,33 +160,5 @@ public class MobilecoreActivity extends Activity implements CordovaInterface {
 			this.mainView.pluginManager.onResume(true);
 		}
 
-	}
-
-	@Override
-	/**
-	 * The final call you receive before your activity is destroyed.
-	 */
-	public void onDestroy() {
-		LOG.d(TAG, "onDestroy()");
-		super.onDestroy();
-		if (mainView.pluginManager != null) {
-			mainView.pluginManager.onDestroy();
-		}
-
-		if (this.mainView != null) {
-
-			// Send destroy event to JavaScript
-			this.mainView.loadUrl("javascript:try{cordova.require('cordova/channel').onDestroy.fire();}catch(e){console.log('exception firing destroy event from native');};");
-
-			// Load blank page so that JavaScript onunload is called
-			this.mainView.loadUrl("about:blank");
-
-			// Forward to plugins
-			if (this.mainView.pluginManager != null) {
-				this.mainView.pluginManager.onDestroy();
-			}
-		} else {
-			// this.endActivity();
-		}
 	}
 }

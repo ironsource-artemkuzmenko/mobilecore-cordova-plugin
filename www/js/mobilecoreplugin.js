@@ -1,5 +1,4 @@
-var MobilecorePlugin = function() {
-};
+var MobilecorePlugin = function() {};
 
 /**
  * Function to init Mobilecore
@@ -783,11 +782,14 @@ MobilecorePlugin.prototype.setDirectToMarketReadyListener = function(successCall
         );
 };
 
-
 //-------------------------------------------------------------------
+
 if(!window.plugins) {
     window.plugins = {};
 }
 if (!window.plugins.MobilecorePlugin) {
+	console.log('MobilecorePlugin initialization');
     window.plugins.MobilecorePlugin = new MobilecorePlugin();
 }
+
+module.exports = MobilecorePlugin;
