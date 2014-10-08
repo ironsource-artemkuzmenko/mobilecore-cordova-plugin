@@ -1,4 +1,4 @@
-var MobilecorePlugin = function() {};
+var MobilecorePlugin = {
 
 /**
  * Function to init Mobilecore
@@ -6,7 +6,7 @@ var MobilecorePlugin = function() {};
  * @param errorcallback
  * @param devHash 
  */
-MobilecorePlugin.prototype.initMobilecore = function(successCallback, errorCallback, devHash, logLevel, adUnits) {
+initMobilecore: function(successCallback, errorCallback, devHash, logLevel, adUnits) {
    	if (errorCallback == null) { errorCallback = function() {}}
        if (typeof errorCallback != "function")  {
            console.log("error callback parameter must be a function");
@@ -30,14 +30,14 @@ MobilecorePlugin.prototype.initMobilecore = function(successCallback, errorCallb
 				}
 			   ]
        ); 
-};
+},
    
 /**
 * Function to Show Offerwall
 * @param successcallback
 * @param errorcallback
 */
-MobilecorePlugin.prototype.showOfferwall = function(successCallback, errorCallback) {
+showOfferwall: function(successCallback, errorCallback) {
 	if (errorCallback == null) { errorCallback = function() {}}
        if (typeof errorCallback != "function")  {
            console.log("error callback parameter must be a function");
@@ -59,7 +59,7 @@ MobilecorePlugin.prototype.showOfferwall = function(successCallback, errorCallba
                    
                }]
        ); 
-};
+},
 
 /**
  * Function to Show Offerwall with mandatory response
@@ -67,7 +67,7 @@ MobilecorePlugin.prototype.showOfferwall = function(successCallback, errorCallba
  * @param errorcallback
  * @param forceShow
  */
-MobilecorePlugin.prototype.showOfferwallForce = function(successCallback, errorCallback, forceShow) {
+showOfferwallForce: function(successCallback, errorCallback, forceShow) {
     	if (errorCallback == null) { errorCallback = function() {}}
         if (typeof errorCallback != "function")  {
             console.log("error callback parameter must be a function");
@@ -89,12 +89,12 @@ MobilecorePlugin.prototype.showOfferwallForce = function(successCallback, errorC
                     "forceShow": forceShow
                 }]
         ); 
-};
+},
     
 /**
  * Function to check if offerwall is ready
  */
-MobilecorePlugin.prototype.isOfferwallReady = function(successCallback, errorCallback) {
+isOfferwallReady: function(successCallback, errorCallback) {
 		if (errorCallback == null) { errorCallback = function() {}}
         if (typeof errorCallback != "function")  {
             console.log("error callback parameter must be a function");
@@ -116,14 +116,14 @@ MobilecorePlugin.prototype.isOfferwallReady = function(successCallback, errorCal
                    
                 }]
         );
-};
+},
 
 /**
 * Function to Refresh Offers
 * @param successcallback
 * @param errorcallback
 */
-MobilecorePlugin.prototype.refreshOffers = function(successCallback, errorCallback) {
+refreshOffers: function(successCallback, errorCallback) {
 	if (errorCallback == null) { errorCallback = function() {}}
     if (typeof errorCallback != "function")  {
            console.log("error callback parameter must be a function");
@@ -145,7 +145,7 @@ MobilecorePlugin.prototype.refreshOffers = function(successCallback, errorCallba
                    
                }]
        ); 
-};
+},
 
 /**
  * Function to open url
@@ -154,7 +154,7 @@ MobilecorePlugin.prototype.refreshOffers = function(successCallback, errorCallba
  * @param url
  * @param internal
  */
-MobilecorePlugin.prototype.openUrl = function(successCallback, errorCallback, url, internal) {
+openUrl: function(successCallback, errorCallback, url, internal) {
 		if (errorCallback == null) { errorCallback = function() {}}
         if (typeof errorCallback != "function")  {
             console.log("error callback parameter must be a function");
@@ -177,14 +177,14 @@ MobilecorePlugin.prototype.openUrl = function(successCallback, errorCallback, ur
                     "internal": internal
                 }]
         );
-};
+},
 
 /**
  * Function to register an Offerwall Ready Listener
  * @param successcallback
  * @param errorcallback
  */
-MobilecorePlugin.prototype.setOfferwallReadyListener = function(successCallback, errorCallback) {
+setOfferwallReadyListener: function(successCallback, errorCallback) {
 		if (errorCallback == null) { errorCallback = function() {}}
         if (typeof errorCallback != "function")  {
             console.log("error callback parameter must be a function");
@@ -206,13 +206,13 @@ MobilecorePlugin.prototype.setOfferwallReadyListener = function(successCallback,
                     
                 }]
         );
-};
+},
 
 
 /**
  * Function to listen widgets callbacks
  */
-MobilecorePlugin.prototype.listenWidgetCallbacks = function(successCallback, errorCallback) {
+listenWidgetCallbacks: function(successCallback, errorCallback) {
 		if (errorCallback == null) { errorCallback = function() {}}
         if (typeof errorCallback != "function")  {
             console.log("error callback parameter must be a function");
@@ -234,7 +234,7 @@ MobilecorePlugin.prototype.listenWidgetCallbacks = function(successCallback, err
                    
                 }]
         );
-};
+},
 
 
 /**
@@ -243,7 +243,7 @@ MobilecorePlugin.prototype.listenWidgetCallbacks = function(successCallback, err
  * @param property
  * @param text
  */
-MobilecorePlugin.prototype.setWidgetTextProperty = function(successCallback, errorCallback, widgetId, property, text) {
+setWidgetTextProperty: function(successCallback, errorCallback, widgetId, property, text) {
 		if (errorCallback == null) { errorCallback = function() {}}
         if (typeof errorCallback != "function")  {
             console.log("error callback parameter must be a function");
@@ -267,14 +267,14 @@ MobilecorePlugin.prototype.setWidgetTextProperty = function(successCallback, err
                     "text" : text
                 }]
         );
-};
+},
 
 /**
  * Function to get widget text property, property should be one of: "MAIN_TEXT", "SECONDARY_TEXT", "BADGE_TEXT"
  * @param widgetId
  * @param property
  */
-MobilecorePlugin.prototype.getWidgetTextProperty = function(successCallback, errorCallback, widgetId, property) {
+getWidgetTextProperty: function(successCallback, errorCallback, widgetId, property) {
 		if (errorCallback == null) { errorCallback = function() {}}
         if (typeof errorCallback != "function")  {
             console.log("error callback parameter must be a function");
@@ -297,14 +297,14 @@ MobilecorePlugin.prototype.getWidgetTextProperty = function(successCallback, err
                     "property": property
                 }]
         );
-};
+},
 
 /**
  * Function to set widget icon resource, resDrawableName is a name of an icon from res\drawable folders
  * @param widgetId
  * @param resDrawableName
  */
-MobilecorePlugin.prototype.setWidgetIconResource = function(successCallback, errorCallback, widgetId, resDrawableName) {
+setWidgetIconResource: function(successCallback, errorCallback, widgetId, resDrawableName) {
 		if (errorCallback == null) { errorCallback = function() {}}
         if (typeof errorCallback != "function")  {
             console.log("error callback parameter must be a function");
@@ -327,13 +327,13 @@ MobilecorePlugin.prototype.setWidgetIconResource = function(successCallback, err
                     "resDrawableName": resDrawableName
                 }]
         );
-};
+},
 
 /**
  * Function to open slider menu
  * @param animate
  */
-MobilecorePlugin.prototype.openSliderMenu = function(successCallback, errorCallback, animate) {
+openSliderMenu: function(successCallback, errorCallback, animate) {
 		if (errorCallback == null) { errorCallback = function() {}}
         if (typeof errorCallback != "function")  {
             console.log("error callback parameter must be a function");
@@ -355,13 +355,13 @@ MobilecorePlugin.prototype.openSliderMenu = function(successCallback, errorCallb
                     "animate": animate
                 }]
         );
-};
+},
 
 /**
  * Function to close slider menu
  * @param animate
  */
-MobilecorePlugin.prototype.closeSliderMenu = function(successCallback, errorCallback, animate) {
+closeSliderMenu: function(successCallback, errorCallback, animate) {
 		if (errorCallback == null) { errorCallback = function() {}}
         if (typeof errorCallback != "function")  {
             console.log("error callback parameter must be a function");
@@ -383,13 +383,13 @@ MobilecorePlugin.prototype.closeSliderMenu = function(successCallback, errorCall
                     "animate": animate
                 }]
         );
-};
+},
 
 /**
  * Function to toggle slider menu
  * @param animate
  */
-MobilecorePlugin.prototype.toggleSliderMenu = function(successCallback, errorCallback, animate) {
+toggleSliderMenu: function(successCallback, errorCallback, animate) {
 		if (errorCallback == null) { errorCallback = function() {}}
         if (typeof errorCallback != "function")  {
             console.log("error callback parameter must be a function");
@@ -411,13 +411,13 @@ MobilecorePlugin.prototype.toggleSliderMenu = function(successCallback, errorCal
                     "animate": animate
                 }]
         );
-};
+},
 
 /**
  * Function to show widget
  * @param widgetId
  */
-MobilecorePlugin.prototype.showWidget = function(successCallback, errorCallback, widgetId) {
+showWidget: function(successCallback, errorCallback, widgetId) {
 		if (errorCallback == null) { errorCallback = function() {}}
         if (typeof errorCallback != "function")  {
             console.log("error callback parameter must be a function");
@@ -439,13 +439,13 @@ MobilecorePlugin.prototype.showWidget = function(successCallback, errorCallback,
                     "widgetId": widgetId
                 }]
         );
-};
+},
 
 /**
  * Function to hide widget
  * @param widgetId
  */
-MobilecorePlugin.prototype.hideWidget = function(successCallback, errorCallback, widgetId) {
+hideWidget: function(successCallback, errorCallback, widgetId) {
 		if (errorCallback == null) { errorCallback = function() {}}
         if (typeof errorCallback != "function")  {
             console.log("error callback parameter must be a function");
@@ -467,13 +467,13 @@ MobilecorePlugin.prototype.hideWidget = function(successCallback, errorCallback,
                     "widgetId": widgetId
                 }]
         );
-};
+},
 
 /**
  * Function to set emphasized widget
  * @param widgetId
  */
-MobilecorePlugin.prototype.setEmphasizedWidget = function(successCallback, errorCallback, widgetId) {
+setEmphasizedWidget: function(successCallback, errorCallback, widgetId) {
 		if (errorCallback == null) { errorCallback = function() {}}
         if (typeof errorCallback != "function")  {
             console.log("error callback parameter must be a function");
@@ -495,12 +495,12 @@ MobilecorePlugin.prototype.setEmphasizedWidget = function(successCallback, error
                     "widgetId": widgetId
                 }]
         );
-};
+},
 
 /**
  * Function to check if slider menu is open
  */
-MobilecorePlugin.prototype.isSliderMenuOpen = function(successCallback, errorCallback) {
+isSliderMenuOpen: function(successCallback, errorCallback) {
 		if (errorCallback == null) { errorCallback = function() {}}
         if (typeof errorCallback != "function")  {
             console.log("error callback parameter must be a function");
@@ -522,7 +522,7 @@ MobilecorePlugin.prototype.isSliderMenuOpen = function(successCallback, errorCal
                    
                 }]
         );
-};
+},
 
 
 
@@ -533,7 +533,7 @@ MobilecorePlugin.prototype.isSliderMenuOpen = function(successCallback, errorCal
  * @param successcallback
  * @param errorcallback
  */
-MobilecorePlugin.prototype.showStickee = function(successCallback, errorCallback) {
+showStickee: function(successCallback, errorCallback) {
 		if (errorCallback == null) { errorCallback = function() {}}
         if (typeof errorCallback != "function")  {
             console.log("error callback parameter must be a function");
@@ -554,14 +554,14 @@ MobilecorePlugin.prototype.showStickee = function(successCallback, errorCallback
 									// create our entry
                 }]
         );
-};
+},
 
 /**
  * Function to hide Stickee
  * @param successcallback
  * @param errorcallback
  */
-MobilecorePlugin.prototype.hideStickee = function(successCallback, errorCallback) {
+hideStickee: function(successCallback, errorCallback) {
 		if (errorCallback == null) { errorCallback = function() {}}
         if (typeof errorCallback != "function")  {
             console.log("error callback parameter must be a function");
@@ -582,14 +582,14 @@ MobilecorePlugin.prototype.hideStickee = function(successCallback, errorCallback
 									// create our entry
                 }]
         );
-};
+},
 
 /**
  * Function to check if Stickee is ready
  * @param successcallback
  * @param errorcallback
  */
-MobilecorePlugin.prototype.isStickeeReady = function(successCallback, errorCallback) {
+isStickeeReady: function(successCallback, errorCallback) {
 		if (errorCallback == null) { errorCallback = function() {}}
         if (typeof errorCallback != "function")  {
             console.log("error callback parameter must be a function");
@@ -610,14 +610,14 @@ MobilecorePlugin.prototype.isStickeeReady = function(successCallback, errorCallb
 									// create our entry
                 }]
         );
-};
+},
 
 /**
  * Function to check if Stickee is showing
  * @param successcallback
  * @param errorcallback
  */
-MobilecorePlugin.prototype.isStickeeShowing = function(successCallback, errorCallback) {
+isStickeeShowing: function(successCallback, errorCallback) {
 		if (errorCallback == null) { errorCallback = function() {}}
         if (typeof errorCallback != "function")  {
             console.log("error callback parameter must be a function");
@@ -638,14 +638,14 @@ MobilecorePlugin.prototype.isStickeeShowing = function(successCallback, errorCal
 									// create our entry
                 }]
         );
-};
+},
 
 /**
  * Function to check if Stickee is showing offers
  * @param successcallback
  * @param errorcallback
  */
-MobilecorePlugin.prototype.isStickeeShowingOffers = function(successCallback, errorCallback) {
+isStickeeShowingOffers: function(successCallback, errorCallback) {
 		if (errorCallback == null) { errorCallback = function() {}}
         if (typeof errorCallback != "function")  {
             console.log("error callback parameter must be a function");
@@ -666,14 +666,14 @@ MobilecorePlugin.prototype.isStickeeShowingOffers = function(successCallback, er
 									// create our entry
                 }]
         );
-};
+},
 
 /**
  * Function to register Stickeez Ready Listener
  * @param successcallback
  * @param errorcallback
  */
-MobilecorePlugin.prototype.setStickeezReadyListener = function(successCallback, errorCallback) {
+setStickeezReadyListener: function(successCallback, errorCallback) {
 		if (errorCallback == null) { errorCallback = function() {}}
         if (typeof errorCallback != "function")  {
             console.log("error callback parameter must be a function");
@@ -694,7 +694,7 @@ MobilecorePlugin.prototype.setStickeezReadyListener = function(successCallback, 
 									// create our entry
                 }]
         );
-};
+},
 
 
 /**
@@ -702,7 +702,7 @@ MobilecorePlugin.prototype.setStickeezReadyListener = function(successCallback, 
  * @param successcallback
  * @param errorcallback
  */
-MobilecorePlugin.prototype.directToMarket = function(successCallback, errorCallback) {
+directToMarket: function(successCallback, errorCallback) {
 		if (errorCallback == null) { errorCallback = function() {}}
         if (typeof errorCallback != "function")  {
             console.log("error callback parameter must be a function");
@@ -723,7 +723,7 @@ MobilecorePlugin.prototype.directToMarket = function(successCallback, errorCallb
 									// create our entry
                 }]
         );
-};
+},
 
 
 /**
@@ -731,7 +731,7 @@ MobilecorePlugin.prototype.directToMarket = function(successCallback, errorCallb
  * @param successcallback
  * @param errorcallback
  */
-MobilecorePlugin.prototype.isDirectToMarketReady = function(successCallback, errorCallback) {
+isDirectToMarketReady: function(successCallback, errorCallback) {
 		if (errorCallback == null) { errorCallback = function() {}}
         if (typeof errorCallback != "function")  {
             console.log("error callback parameter must be a function");
@@ -752,14 +752,14 @@ MobilecorePlugin.prototype.isDirectToMarketReady = function(successCallback, err
 									// create our entry
                 }]
         );
-};
+},
 
 /**
  * Function to register Direct to Market Ready Listener
  * @param successcallback
  * @param errorcallback
  */
-MobilecorePlugin.prototype.setDirectToMarketReadyListener = function(successCallback, errorCallback) {
+setDirectToMarketReadyListener: function(successCallback, errorCallback) {
 		if (errorCallback == null) { errorCallback = function() {}}
         if (typeof errorCallback != "function")  {
             console.log("error callback parameter must be a function");
@@ -780,16 +780,9 @@ MobilecorePlugin.prototype.setDirectToMarketReadyListener = function(successCall
 									// create our entry
                 }]
         );
-};
+},
 
+}
 //-------------------------------------------------------------------
-
-if(!window.plugins) {
-    window.plugins = {};
-}
-if (!window.plugins.MobilecorePlugin) {
-	console.log('MobilecorePlugin initialization');
-    window.plugins.MobilecorePlugin = new MobilecorePlugin();
-}
 
 module.exports = MobilecorePlugin;

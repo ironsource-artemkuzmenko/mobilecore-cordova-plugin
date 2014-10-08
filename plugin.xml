@@ -46,7 +46,7 @@ under the License.
 		<source-file src="src/android/ForSlider/MobilecoreActivity.java" target-dir="src/com/mobilecore/phonegap" />		
 		
 		<js-module src="www/js/mobilecoreplugin.js" name="MobilecorePlugin">
-			<clobbers target="window.plugins" />
+			<clobbers target="window.MobilecorePlugin" />
 		</js-module>
 		
 		<config-file target="AndroidManifest.xml" parent="/manifest">		
