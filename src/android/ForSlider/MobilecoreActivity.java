@@ -1,164 +1,148 @@
 package com.mobilecore.phonegap;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
-import org.apache.cordova.CordovaInterface;
-import org.apache.cordova.CordovaPlugin;
+import org.apache.cordova.CordovaActivity;
+import org.apache.cordova.CordovaChromeClient;
 import org.apache.cordova.CordovaWebView;
+import org.apache.cordova.CordovaWebViewClient;
 import org.apache.cordova.LOG;
+import org.apache.cordova.LinearLayoutSoftKeyboardDetect;
 
-import android.app.Activity;
-import android.content.Intent;
+import android.annotation.SuppressLint;
+import android.graphics.Color;
+import android.media.AudioManager;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.Display;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewParent;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.LinearLayout;
 
 import com.example.hello.mobilecore.R;
 import com.ironsource.mobilcore.MobileCore;
 import com.ironsource.mobilcore.MobileCore.AD_UNITS;
-import com.ironsource.mobilcore.OnReadyListener;
 
-public class MobilecoreActivity extends Activity implements CordovaInterface {
+public class MobilecoreActivity extends CordovaActivity {
 
 	String TAG = "MainActivity CordovaInterface";
 
 	CordovaWebView mainView;
-	private final ExecutorService threadPool = Executors.newCachedThreadPool();
-	private CordovaPlugin activityResultCallback;
-	@SuppressWarnings("unused")
-	private Object activityResultKeepRunning;
-	private Object keepRunning;
-	
-	private final String MOBILECORE_DEV_HASH = "69JU0DHY08GL1TOLW85R6W32GK6XA";
+
+	private final boolean WITH_SLIDER = true; // Switch this to false if you don't want to use mobileCore Slider
+	private final String MOBILECORE_DEV_HASH = "3FCONBTOP58OJE0UTVFCE947OC88D"; // REPLACE THIS WITH YOUR OWN DEV TOKEN
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		// setContentView(R.layout.main);
 
-		MobileCore.init(this, MOBILECORE_DEV_HASH, MobileCore.LOG_TYPE.PRODUCTION, AD_UNITS.ALL_UNITS);
+		MobileCore.init(this, MOBILECORE_DEV_HASH, MobileCore.LOG_TYPE.DEBUG, AD_UNITS.ALL_UNITS); 
 		
-		MobileCore.getSlider().setContentViewWithSlider(this, R.layout.main);
+		super.init();
 
-		if (MobileCore.isStickeeReady()) {
-			MobileCore.showStickee(this);
+		loadUrl("file:///android_asset/www/index.html");
+	}
+
+	@SuppressWarnings("deprecation")
+    @Override
+	protected void createViews() {
+		// This builds the view. We could probably get away with NOT having a LinearLayout, but I like having a bucket!
+
+		LOG.d(TAG, "CordovaActivity.createViews()");
+		
+        if (WITH_SLIDER) {
+        	return;
+        }
+		
+		Display display = getWindowManager().getDefaultDisplay();
+		int width = display.getWidth();
+		int height = display.getHeight();
+
+		root = new LinearLayoutSoftKeyboardDetect(this, width, height);
+		root.setOrientation(LinearLayout.VERTICAL);
+		root.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+		        ViewGroup.LayoutParams.MATCH_PARENT, 0.0F));
+
+		appView.setId(100);
+		appView.setLayoutParams(new LinearLayout.LayoutParams(
+		        ViewGroup.LayoutParams.MATCH_PARENT,
+		        ViewGroup.LayoutParams.MATCH_PARENT,
+		        1.0F));
+
+		// Add web view but make it invisible while loading URL
+		appView.setVisibility(View.INVISIBLE);
+
+		// need to remove appView from any existing parent before invoking root.addView(appView)
+		ViewParent parent = appView.getParent();
+		if ((parent != null) && (parent != root)) {
+			LOG.d(TAG, "removing appView from existing parent");
+			ViewGroup parentGroup = (ViewGroup) parent;
+			parentGroup.removeView(appView);
+		}
+		root.addView((View) appView);
+		
+		setContentView(root);
+		
+		int backgroundColor = preferences.getInteger("BackgroundColor", Color.BLACK);
+		root.setBackgroundColor(backgroundColor);
+	}
+
+	@Override
+    protected CordovaWebView makeWebView() {
+		CordovaWebView webView = null;
+		if (WITH_SLIDER) {
+			webView = (CordovaWebView) findViewById(R.id.mainView);
 		} else {
-			MobileCore.setStickeezReadyListener(new OnReadyListener() {
-
-				@Override
-				public void onReady(AD_UNITS arg0) {
-					MobileCore.showStickee(MobilecoreActivity.this);
-				}
-			});
+			webView = new CordovaWebView(MobilecoreActivity.this);
 		}
+        return webView;
+    }	
 
-		mainView = (CordovaWebView) findViewById(R.id.mainView);
-		mainView.loadUrl("file:///android_asset/www/index.html");
-	}
+    @SuppressWarnings("deprecation")
+    @SuppressLint("NewApi")
+    @Override
+    public void init(CordovaWebView webView, CordovaWebViewClient webViewClient, CordovaChromeClient webChromeClient) {
+        LOG.d(TAG, "CordovaActivity.init()");
 
-	@Override
-	public Activity getActivity() {
-		return this;
-	}
+        if(!preferences.getBoolean("ShowTitle", false))
+        {
+            getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+        }
 
-	@Override
-	public ExecutorService getThreadPool() {
-		return threadPool;
-	}
+        if(preferences.getBoolean("SetFullscreen", false))
+        {
+            Log.d(TAG, "The SetFullscreen configuration is deprecated in favor of Fullscreen, and will be removed in a future version.");
+            getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                    WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        } else if (preferences.getBoolean("Fullscreen", false)) {
+            getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                    WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        } else {
+            getWindow().setFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN,
+                    WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
+        }
 
-	@Override
-	public Object onMessage(String id, Object data) {
-		LOG.d(TAG, "onMessage(" + id + "," + data + ")");
-		if ("exit".equals(id)) {
-			super.finish();
-		}
-		return null;
-	}
+        if (WITH_SLIDER) {
+        	MobileCore.getSlider().setContentViewWithSlider(this, R.layout.main);
+        }
+        
+        appView = webView != null ? webView : makeWebView();
+        if (appView.pluginManager == null) {
+            appView.init(this, webViewClient != null ? webViewClient : makeWebViewClient(appView),
+                    webChromeClient != null ? webChromeClient : makeChromeClient(appView),
+                    pluginEntries, internalWhitelist, externalWhitelist, preferences);
+        }
 
-	@Override
-	public void setActivityResultCallback(CordovaPlugin plugin) {
-		this.activityResultCallback = plugin;
-	}
+        // TODO: Have the views set this themselves.
+        if (preferences.getBoolean("DisallowOverscroll", false)) {
+            appView.setOverScrollMode(View.OVER_SCROLL_NEVER);
+        }
+        createViews();
 
-	@Override
-	public void startActivityForResult(CordovaPlugin command, Intent intent, int requestCode) {
-		this.activityResultCallback = command;
-		this.activityResultKeepRunning = this.keepRunning;
-
-		// If multitasking turned on, then disable it for activities that return results
-		if (command != null) {
-			this.keepRunning = false;
-		}
-
-		// Start activity
-		super.startActivityForResult(intent, requestCode);
-
-	}
-
-	@Override
-	/**
-	 * Called when an activity you launched exits, giving you the requestCode you started it with,
-	 * the resultCode it returned, and any additional data from it.
-	 *
-	 * @param requestCode       The request code originally supplied to startActivityForResult(),
-	 *                          allowing you to identify who this result came from.
-	 * @param resultCode        The integer result code returned by the child activity through its setResult().
-	 * @param data              An Intent, which can return result data to the caller (various data can be attached to Intent "extras").
-	 */
-	protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
-		super.onActivityResult(requestCode, resultCode, intent);
-		CordovaPlugin callback = this.activityResultCallback;
-		if (callback != null) {
-			callback.onActivityResult(requestCode, resultCode, intent);
-		}
-	}
-
-	@Override
-	/**
-	 * Called when the system is about to start resuming a previous activity.
-	 */
-	protected void onPause() {
-		super.onPause();
-
-		// Send pause event to JavaScript
-		this.mainView.loadUrl("javascript:try{cordova.fireDocumentEvent('pause');}catch(e){console.log('exception firing pause event from native');};");
-
-		// Forward to plugins
-		if (this.mainView.pluginManager != null) {
-			this.mainView.pluginManager.onPause(true);
-		}
-	}
-
-	@Override
-	/**
-	 * Called when the activity receives a new intent
-	 **/
-	protected void onNewIntent(Intent intent) {
-		super.onNewIntent(intent);
-
-		// Forward to plugins
-		if ((this.mainView != null) && (this.mainView.pluginManager != null)) {
-			this.mainView.pluginManager.onNewIntent(intent);
-		}
-	}
-
-	@Override
-	/**
-	 * Called when the activity will start interacting with the user.
-	 */
-	protected void onResume() {
-		super.onResume();
-
-		if (this.mainView == null) {
-			return;
-		}
-
-		// Send resume event to JavaScript
-		this.mainView.loadUrl("javascript:try{cordova.fireDocumentEvent('resume');}catch(e){console.log('exception firing resume event from native');};");
-
-		// Forward to plugins
-		if (this.mainView.pluginManager != null) {
-			this.mainView.pluginManager.onResume(true);
-		}
-
-	}
+        // TODO: Make this a preference (CB-6153)
+        // Setup the hardware volume controls to handle volume control
+        setVolumeControlStream(AudioManager.STREAM_MUSIC);
+    }
+    
 }
