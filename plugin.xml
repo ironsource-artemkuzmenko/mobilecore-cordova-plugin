@@ -70,6 +70,11 @@ under the License.
 			android:enabled= "true"
 			android:process= ":installationTracker" />
 			
+			<activity 
+			android:name="com.ironsource.mobilcore.InterstitialVideoActivity" 
+            android:configChanges="keyboardHidden|orientation|screenSize" 
+            android:keepScreenOn="true"/>
+			
 			 <activity
             android:name="com.mobilecore.phonegap.MobilecoreActivity"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale"
